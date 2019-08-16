@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>yuhu</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .wrp {
+      width: 100%;
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: blueviolet;
+    }
+
+    .wrp img {
+      width: 100px;
+    }
+
+    .section {
+      background: #eeeeee;
+      margin: 15px 0;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .btn {
+      background: blueviolet;
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      box-shadow: 1px 3px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .code {
+      background: #000000;
+      border-radius: 8px;
+      color: #ffffff;
+      padding: 6px;
+      overflow-x: auto;
+      box-shadow: 1px 3px 15px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrp">
+    <img src="./logo.12332225.png" alt="">
+  </div>
+  <section class="section">
+    <div id="getBalance" class="btn">transaction.getBalance</div>
+    <div class="code">
+      <pre>
+Yuhu.callAPI('transaction.getBalance', params)
+function nativeCallback(res) {
+  var r = {}
+  if (isIOS()) {
+    r = JSON.parse(res)
+  } else {
+    r = JSON.parse(window.android.getBalance(res))
+  }
+  switch (r.type) {
+    case "getBalance":
+      document.getElementById("getBalance").innerHTML = r.amount
+  }
+}
+      </pre>
+    </div>
+  </section>
+  <section class="section">
+    <div id="sendTransaction" class="btn">transaction.sendTransaction</div>
+    <div class="code">
+      <pre>
+var params = {}
+Yuhu.callAPI('transaction.sendTransaction', params)
+function nativeCallback(res) {
+  var r = {}
+  if (isIOS()) {
+    r = JSON.parse(res)
+  } else {
+    r = JSON.parse(window.android.sendTransaction(res))
+  }
+  switch (r.type) {
+    case "sendTransaction":
+      document.getElementById("sendTransaction").innerHTML = r.txHash
+  }
+}
+      </pre>
+    </div>
+  </section>
+  <section class="section">
+    <div id="closeDapp" class="btn">navigator.closeDapp</div>
+    <div class="code">
+      <pre>
+Yuhu.callAPI('navigator.closeDapp')
+      </pre>
+    </div>
+  </section>
+  <section class="section">
+    <div id="goBack" class="btn">navigator.goBack</div>
+    <a href="https://www.baidu.com">gobaidu</a>
+    <div class="code">
+      <pre>
+Yuhu.callAPI('navigator.goBack')
+      </pre>
+    </div>
+  </section>
+  <section class="section">
+    <div id="reload" class="btn">navigator.reload</div>
+    <div class="code">
+      <pre>
+Yuhu.callAPI('navigator.reload')
+      </pre>
+    </div>
+  </section>
+  <section class="section">
+    <div id="alert" class="btn">navtive.alert</div>
+    <div class="code">
+      <pre>
+Yuhu.callAPI('navtive.alert', params)
+      </pre>
+    </div>
+  </section>
+  <section class="section">
+    <div id="confirm" class="btn">navtive.confirm</div>
+    <div class="code">
+      <pre>
+Yuhu.callAPI('navtive.confirm', params)
+      </pre>
+    </div>
+  </section>
+  <section class="section">
+    <div id="setClipboard" class="btn">navtive.setClipboard</div>
+    <div class="code">
+      <pre>
+Yuhu.callAPI('navtive.setClipboard', params)
+      </pre>
+    </div>
+  </section>
+  <section class="section">
+    <div id="scanQRCode" class="btn">navtive.scanQRCode</div>
+    <div class="code">
+      <pre>
+Yuhu.callAPI('navtive.scanQRCode')
+      </pre>
+    </div>
+  </section>
+  <section class="section">
+    <div id="showAccountSwitch" class="btn">user.showAccountSwitch</div>
+    <div class="code">
+      <pre>
+Yuhu.callAPI('user.showAccountSwitch')
+      </pre>
+    </div>
+  </section>
+  <script src="./dapp.js"></script>
+  <script>
+    // 打印结果
+    function asyncAlert(content) {
+      setTimeout(function () {
+        alert(content);
+      }, 1);
+    }
+
+    // app 返回值方法
+    function nativeCallback(res) {
+      // asyncAlert(res)
+      var r = {}
+      if (isIOS()) {
+        r = JSON.parse(res)
+      } else {
+        r = JSON.parse(res.replace(/\\/g,""))
+      }  
+
+      switch (r.type) {
+        case "getBalance":
+          // TODO
+          asyncAlert(r.amount)
+          break
+        case "sendTransaction":
+          // TODO
+          asyncAlert(r.txHash)
+          break
+        case "confirm":
+          // TODO
+          asyncAlert(r.action)
+          break
+        case "scanQRCode":
+          // TODO
+          asyncAlert(r.message)
+          break
+        case "showAccountSwitch":
+          // TODO
+          asyncAlert(r.address)
+          break
+      }
+    }
+
+    // 调用
+    document.getElementById("getBalance").addEventListener("click", function () {
+      Yuhu.callAPI("transaction.getBalance", { address: "0x008cD0bF4D85a559f39C797F1e5e772973C1C26f" })
+    })
+    document.getElementById("sendTransaction").addEventListener("click", function () {
+      Yuhu.callAPI("transaction.sendTransaction", { from: "0x008cD0bF4D85a559f39C797F1e5e772973C1C26f", to: "0xbAA7343e8F318B470473B23966e101a6250B4735", value: "5" })
+    })
+    document.getElementById("closeDapp").addEventListener("click", function () {
+      Yuhu.callAPI("navigator.closeDapp")
+    })
+    document.getElementById("goBack").addEventListener("click", function () {
+      Yuhu.callAPI("navigator.goBack")
+    })
+    document.getElementById("reload").addEventListener("click", function () {
+      Yuhu.callAPI("navigator.reload")
+    })
+    document.getElementById("alert").addEventListener("click", function () {
+      Yuhu.callAPI("navtive.alert", { message: "hello yuhu dapp" })
+    })
+    document.getElementById("confirm").addEventListener("click", function () {
+      Yuhu.callAPI("navtive.confirm", { title: "标题", message: "这是一个弹窗", cancelText: "取消按钮", confirmText: "确认按钮" })
+    })
+    document.getElementById("setClipboard").addEventListener("click", function () {
+      Yuhu.callAPI("navtive.setClipboard", { message: "hello yuhu dapp" })
+    })
+    document.getElementById("scanQRCode").addEventListener("click", function () {
+      Yuhu.callAPI("navtive.scanQRCode")
+    })
+    document.getElementById("showAccountSwitch").addEventListener("click", function () {
+      Yuhu.callAPI("user.showAccountSwitch")
+    })
+  </script>
+</body>
+
+</html>
