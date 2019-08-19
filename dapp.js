@@ -36,7 +36,7 @@ function loadURL(url) {
 /**
  * js call ios function name
  * @param {String} action 
- * @param {String} params 
+ * @param {Object} params 
  */
 function jsCallIosAction(action, params) {
   var str = ""
